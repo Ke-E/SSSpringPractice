@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+    参考サイト：
+    https://reffect.co.jp/vue/vue-js-basic/
+-->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue</title>
+  </head>
+  <body>
+    <h1 id="app">{{ tempmessage }}</h1>
+    <div id="app2">
+        <h2 v-text="message"></h2>
+        <div id="hoge">
+            <!-- #app2 の配下なら別タグがあっても参照可能 -->
+            <h3 v-text="message2"></h3>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello World! Ke-N!',
+          tempmessage: 'Good By!'
+        },
+      });
+      var app2 = new Vue({
+        el: '#app2',
+        data: {
+            message: 'from v-text!',
+            message2: 'second from v-text'
+        }
+      });
+    </script>
+  </body>
+</html>
