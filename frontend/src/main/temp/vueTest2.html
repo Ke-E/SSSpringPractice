@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+    参考サイト：
+    https://reffect.co.jp/vue/vue-js-basic/
+-->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue</title>
+  </head>
+  <body>
+    <div id="app">
+        <!-- v-if -->
+        <div>
+            <p v-if="stock_number > 0">販売中！</p>
+            <p v-else>在庫切れ！</p>
+            <!-- 別の要素が挟まるとそこでifは終わり。結果がtrueなら「販売中」は出力されるが、elseだった場合は何も表示されず -->
+            <p v-if="stock_number > 0">販売中だよ！</p>
+            <p>別の要素が挟まったらどうなる？</p>
+            <p v-else>在庫切れだよ！</p>
+            <template v-if="stock_number > 0">
+                <p>絶賛販売中</p>
+                <p>残るは{{ stock_number }}個となります！</p>
+            </template>
+        </div>
+        <!-- v-show -->
+        <div>
+            <p v-show="stock_number > 0">販売中です</p>
+        </div>
+        <!-- v-for -->
+        <div>
+            <ul>
+                <li v-for="game in games">{{game}}</li>
+            </ul>
+            <ul>
+                <li v-for="likeGame of likeGames">{{likeGame.title}}({{likeGame.series}})</li>
+            </ul>
+            <ul>
+                <!-- "index" は取得したオブジェクトのインデックスを格納してくれる -->
+                <li v-for="(likeGame, index) of likeGames">{{index}}:{{likeGame.title}}({{likeGame.series}})</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          stock_number: 5,
+          games: ['tales', 'pokemon', 'gundam', 'apex'],
+          likeGames: [
+            { id: 1, title: 'arise', series: 'tales'},
+            { id: 2, title: 'sv', series: 'pokemon'},
+            { id: 3, title: 'exvs mbon', series: 'gundam'},
+            { id: 4, title: 'apex', series: 'apex'},
+          ]
+        },
+      });
+    </script>
+  </body>
+</html>
