@@ -33,11 +33,18 @@
                 <li v-for="game in games">{{game}}</li>
             </ul>
             <ul>
+                <!-- in ではなく of でもOK -->
                 <li v-for="likeGame of likeGames">{{likeGame.title}}({{likeGame.series}})</li>
             </ul>
             <ul>
-                <!-- "index" は取得したオブジェクトのインデックスを格納してくれる -->
-                <li v-for="(likeGame, index) of likeGames">{{index}}:{{likeGame.title}}({{likeGame.series}})</li>
+                <!-- 複数取り出すこともできて、第１引数にはオブジェクト、第２引数の変数にはインデックスを格納してくれる（変数名は任意） -->
+                <li v-for="(likeGame, hoge) in likeGames">{{hoge}}:{{likeGame.title}}({{likeGame.series}})</li>
+            </ul>
+            <ul>
+                <!-- オブジェクト->オブジェクト なら、第２引数にキー名、第３引数にインデックス（同様に変数名は任意） -->
+                <li v-for="(chara, name, index) in ariseCharacter">
+                    {{index}}:{{name}}({{chara.gender}}):{{chara.weapon}}
+                </li>
             </ul>
         </div>
     </div>
@@ -54,7 +61,25 @@
             { id: 2, title: 'sv', series: 'pokemon'},
             { id: 3, title: 'exvs mbon', series: 'gundam'},
             { id: 4, title: 'apex', series: 'apex'},
-          ]
+          ],
+          ariseCharacter: {
+            arufen: {
+                weapon: 'sword',
+                gender: 'man'
+            },
+            shion: {
+                weapon: 'gun',
+                gender: 'woman'
+            },
+            rinwel: {
+                weapon: 'magic',
+                gender: 'woman'
+            },
+            row: {
+                weapon: 'fist',
+                gender: 'man'
+            }
+          }
         },
       });
     </script>
