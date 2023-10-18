@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+    参考サイト：
+    https://reffect.co.jp/vue/vue-js-basic/
+-->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue</title>
+  </head>
+  <body>
+    <div id="app">
+        <div>
+            <h2>算出プロパティ</h2>
+            <input type="text" v-model="inputCharacters" />
+            <p v-if="inputNumber <= 10">必要な文字列は {{needNumbers}} 文字です。</p>
+            <p v-else>10文字を超過しています</p>
+        </div>
+        <div>
+            <input type="number" v-model="count" />
+            <input type="number" v-model="doubleCount" />
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+            inputCharacters: '',
+            count: 0,
+            doubleCount: 0
+        },
+        computed: {
+            inputNumber() {
+                return this.inputCharacters.length
+            },
+            needNumbers() {
+                return 10 - this.inputCharacters.length;
+            }
+        },
+        watch: {
+            // data の count と同じ名前である必要がある
+            count(value) {
+                if (value > 100) {
+                    console.log('入力値が100を超えました');
+                }
+            },
+            // ２つ引数をもたせることで、一つ前の値と最新の値、療法をもたせることができる
+            doubleCount(newcount, oldcount) {
+                console.log('newcount:' + newcount);
+                console.log('oldcount:' + oldcount);
+            }
+        }
+      });
+    </script>
+  </body>
+</html>

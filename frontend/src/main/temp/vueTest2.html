@@ -8,6 +8,12 @@
     <meta charset="UTF-8" />
     <title>Vue</title>
   </head>
+  <style>
+    .active {
+        color:blue;
+        background-color: bisque;
+    }
+  </style>
   <body>
     <div id="app">
         <!-- v-if -->
@@ -47,12 +53,46 @@
                 </li>
             </ul>
         </div>
+        <!-- v-model -->
+        <div>
+            <input type="text" v-model="textInput" />
+            <p>{{ textInput }}</p>
+        </div>
+        <!-- v-on -->
+        <div>
+            <button v-on:click="clickButton">ボタン</button>
+            <!-- v-bind:class と v-on:click を組み合わせて属性の切り替え -->
+            <div>
+                <h2 v-bind:class="{active: isActive}">Hello World!</h2>
+                <button v-on:click="classToggle">class属性ON/OFF</button>
+            </div>
+        </div>
+        <!-- competed -->
+        <div>
+            <p>税抜価格：¥{{ no_tax_price }}</p>
+            <p>税込価格：¥{{ include_tax_price }}</p>
+            <p>直接計算も可能：¥{{ no_tax_price*1.08 }}</p>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
       var app = new Vue({
         el: '#app',
+        methods: { // method's' のため注意
+            // または clickButton() {
+            clickButton: function () {
+                alert('Click Button');
+            },
+            classToggle() {
+                this.isActive = !this.isActive;
+            }
+        },
+        computed: {
+            include_tax_price() {
+                return this.no_tax_price * 1.08;
+            }
+        },
         data: {
           stock_number: 5,
           games: ['tales', 'pokemon', 'gundam', 'apex'],
@@ -79,7 +119,10 @@
                 weapon: 'fist',
                 gender: 'man'
             }
-          }
+          },
+          textInput: '初期値はこれ',
+          isActive: true,
+          no_tax_price: 100
         },
       });
     </script>
