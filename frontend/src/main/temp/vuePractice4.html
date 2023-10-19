@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+    参考サイト：
+    https://reffect.co.jp/vue/vue-component-basic/
+-->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Component</title>
+  </head>
+  <body>
+    <div id="app">
+      <hello-world></hello-world>
+      <!-- 繰り返し使用可能 -->
+      <hello-world></hello-world>
+      <hello-world></hello-world>
+      <good-by></good-by>
+      <!-- 別ファイルからのテンプレート読み出し -->
+      <see-you></see-you>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="module">
+        // ※別ファイルの読み込みをする場合はvsCode画面右下の[Go Live]から実行すること
+        import SeeYou from './vuePractice.js';
+        // new Vue の前に置く必要あるとか。new するとそれまでに宣言したscriptを読み込む挙動だったり？
+        // グローバルでの登録
+        Vue.component('hello-world', {
+            template: '<h1>Hello World</h1>',
+            /*
+                注意：テンプレート化する要素は、１つのルート要素でなければならない
+                ✗ → template: '<p>hoge</p><a>hige</a>'（最上層にある'pタグ'と'aタグ'が同階層上に２つある）
+                これらを'divタグ'などで囲うことで対処可能
+                ◯ → template: '<div><p>hoge</p><a>hige</a></div>'（最上層のタグは'divタグ'一つになるためエラー回避）
+                ※vue2 だと上記の制限があるが、vue3ではこの制限はなくなっている
+            */
+        });
+
+        // 別ファイル読み込みからのグローバル登録だと以下
+        // Vue.component('see-you', SeeYou);
+
+        // new するというのは、el に指定した領域に対してvueオブジェクト操作の適応対象とするよ、という意味合いを持つっぽい
+        var app = new Vue({
+            el: '#app',
+            data: {},
+            // ローカルでの登録
+            components: {
+                'good-by': {
+                    template: '<h1>Good-By World</h1>'
+                },
+                'see-you': SeeYou
+            }
+        });
+    </script>
+  </body>
+</html>

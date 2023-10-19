@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+    参考サイト：
+    https://reffect.co.jp/vue/vue-component-basic/
+-->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Component</title>
+  </head>
+  <body>
+    <div id="app">
+        <div>
+            <input type="text" v-model="inputText" />
+            <hello-world v-bind:message="inputText"></hello-world>
+        </div>
+        <div>
+            <!--
+                ①componentの[blog-post]でタグ生成
+                ②v-forでdata.postsのループで、[post]を生成
+                ③ループで取得した[post]を、"v-bindでpropsで定義した[post]"にマッピング
+                ④componentで定義した[post.title]や[post.content]を、③でマッピングした[post]で出力
+                ※v-bind:keyは出力だけ考えれば不要だが、テーブルにおける要素の削除を行った場合の挙動に差異がある。以下を参照。
+                https://reffect.co.jp/vue/v-bind-key-understand-by-developer-tool/#v-bindkey-%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88
+                サクッとまとめると以下の通り
+                ・keyがない（もしくはkeyに'index'で定義した）場合：
+                    削除対象の要素Nに対し、N+1の要素で"上書き"する
+                ・keyを記述した場合：
+                    削除対象の要素Nは"削除"され、後続の要素が前にずれる
+                これがどのような不具合を引き起こすかは上記のサイトを参照すること
+                兎にも角にも不具合を引き起こす可能性があるので基本的に:keyを用いるほうが良いという結論で良いはず
+             -->
+            <blog-post
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post"
+            ></blog-post>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="module">
+        Vue.component('hello-world', {
+            template: '<h1>Hello World and {{ message }}</h1>',
+            props: ['message'],
+        });
+        Vue.component('blog-post', {
+            template: '<div><h2>{{ post.title }}</h2><p>{{ post.content }}</p></div>',
+            props: ['post'],
+            // propsにオブジェクトを渡すのではなく、引数を渡す形も有効
+            // <blog-post v-for="post in posts" :key="post.id" :title="post.title" :content="post.content">
+            // template: <div><h2>{{ title }}</h2><p>{{ content }}</p></div>
+            // props: ['title', 'content']
+        });
+        var app = new Vue({
+            el: '#app',
+            data: {
+                inputText: '',
+                posts: [
+                    { id: 0, title: 'vue.jsの基礎', content: 'about vue.js...' },
+                    { id: 1, title: 'componentの基礎', content: 'about component...' },
+                    { id: 2, title: 'Vue CLIの基礎', content: 'about Vue CLIの基礎...' },
+                ]
+            },
+        });
+    </script>
+  </body>
+</html>

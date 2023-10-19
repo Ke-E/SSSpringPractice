@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Component Emit</title>
+    <!-- 子コンポーネントから親コンポーネントへ、データの受け渡しとイベントの実行 -->
+  </head>
+  <body>
+    <div id="app">
+        <!-- ⑤メソッドreceiveMessage(message)の実行により、変数が書き換えられる -->
+        <p>{{ message }}</p>
+        <!-- ③clickEventで指定された"from-child"が起動し、親コンポーネントのメソッドであるreceiveMessage(message)が呼ばれる -->
+        <emit-event v-on:from-child="receiveMessage"></emit-event>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      Vue.component('emit-event', {
+        // ①テキストを入力したうえでボタンを押すと、子コンポーネントのmethodであるclickEvent()が呼ばれる
+        template:
+            `<div>
+                <input type="text" v-model="inputText">
+                <button v-on:click="clickEvent">送信ボタン</button>
+            </div>`,
+        data: function() {
+            return {
+                inputText: ''
+            };
+        },
+        methods: {
+          clickEvent: function () {
+            // ②入力されたテキストを引数に、親コンポーネントの:from-childを起動させる
+            this.$emit('from-child', this.inputText);
+          },
+        },
+      });
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'before'
+        },
+        methods: {
+            // ④子コンポーネントから渡された引数を用いてメソッドの実行を行う
+            receiveMessage(message) {
+                this.message = message;
+            },
+        },
+      });
+    </script>
+  </body>
+</html>
+

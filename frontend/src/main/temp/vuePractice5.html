@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+    参考サイト：
+    https://reffect.co.jp/vue/vue-component-basic/
+-->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Component</title>
+  </head>
+  <body>
+    <div id="app">
+      <hello-world></hello-world>
+      <button-counter></button-counter>
+      <!-- 呼び出したコンポーネントはそれぞれが独立しており、変数count もそれぞれ独立している -->
+      <button-counter></button-counter>
+      <button-counter></button-counter>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="module">
+        Vue.component('hello-world', {
+            // data内の関数を用いた記述
+            template: '<h1>{{ message }}, {{ message2 }}</h1>',
+            data: function() {
+                return {
+                    message: 'Hello World',
+                    // 複数定義も可能
+                    message2: 'Good-Bye World'
+                };
+            }
+        });
+
+        Vue.component('button-counter', {
+            template:
+                // '<p>カウント:{{ count }} <button v-on:click="countUp">Up</button><button v-on:click="countDown">Down</button></p>',
+                // 改行したい場合はバッククォート[`]で囲う。これはjavascriptの機能であるため他のことにも流用可能
+                `<p>
+                    カウント:{{ count }}
+                    <button v-on:click="countUp">Up</button>
+                    <button v-on:click="countDown">Down</button>
+                </p>`
+            ,
+            data: function () {
+                return {
+                    count: 0,
+                };
+            },
+            methods: {
+                countUp: function () {
+                this.count++;
+                },
+                countDown: function () {
+                this.count--;
+                },
+            },
+        });
+        var app = new Vue({
+            el: '#app',
+            data: {},
+        });
+    </script>
+  </body>
+</html>

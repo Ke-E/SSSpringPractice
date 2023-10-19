@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Component Emit</title>
+    <!-- 子コンポーネントから親コンポーネントへ、イベントの実行 -->
+  </head>
+  <body>
+    <div id="app">
+        <!-- ③clickEventで指定された"from-child"が起動し、親コンポーネントのメソッドであるalertMessage()が呼ばれる -->
+      <emit-event v-on:from-child="alertMessage"></emit-event>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      Vue.component('emit-event', {
+        // ①ボタンを押されて、子コンポーネントのmethodであるclickEvent()が呼ばれる
+        template: '<button v-on:click="clickEvent">ボタン</button>',
+        methods: {
+          clickEvent: function () {
+            // $emitは親コンポーネントを指定し、起動させる
+            this.$emit('from-child');
+          },
+        },
+      });
+
+      var app = new Vue({
+        el: '#app',
+        methods: {
+          alertMessage: function () {
+            // ④メソッドが呼び出され、実行する
+            alert('子からイベント受け取ったよ');
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
+
