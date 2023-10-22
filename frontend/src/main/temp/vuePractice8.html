@@ -7,10 +7,22 @@
   </head>
   <body>
     <div id="app">
-        <!-- ⑤メソッドreceiveMessage(message)の実行により、変数が書き換えられる -->
-        <p>{{ message }}</p>
-        <!-- ③clickEventで指定された"from-child"が起動し、親コンポーネントのメソッドであるreceiveMessage(message)が呼ばれる -->
-        <emit-event v-on:from-child="receiveMessage"></emit-event>
+        <div>
+            <!-- ⑤メソッドreceiveMessage(message)の実行により、変数が書き換えられる -->
+            <p>{{ message }}</p>
+            <!-- ③clickEventで指定された"from-child"が起動し、親コンポーネントのメソッドであるreceiveMessage(message)が呼ばれる -->
+            <emit-event v-on:from-child="receiveMessage"></emit-event>
+        </div>
+        <!-- slotの使い方 -->
+        <div>
+            <slot-test>スロットによる挿入</slot-test>
+            <slot-test></slot-test>
+            <slot-name-test>
+                <!-- 片方をコメントアウトすると、コメントアウトした方の値がデフォルトの値で出力される-->
+                <template slot="title">vue.jsの基礎</template>
+                <template slot="content">vue.jsについて</template>
+            </slot-name-test>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -34,6 +46,16 @@
           },
         },
       });
+      Vue.component('slot-test', {
+        template: '<p><slot>デフォルト</slot></p>'
+      });
+      Vue.component('slot-name-test', {
+        template:
+            `<div>
+                <h1><slot name="title">タイトル</slot></h1>
+                <p><slot name="content">内容</slot></p>
+            </div>`
+      })
 
       var app = new Vue({
         el: '#app',
